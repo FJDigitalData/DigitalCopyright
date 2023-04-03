@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.system.mapper.FileInfoMapper">
+
+    <resultMap id="fileInfo" type="com.ruoyi.system.domain.FileInfo">
+        <result column="id" property="id"/>
+        <result column="url" property="url"/>
+        <result column="zip_url" property="zipUrl"/>
+        <result column="name" property="name"/>
+        <result column="file_name" property="fileName"/>
+        <result column="suffix" property="suffix"/>
+        <result column="is_img" property="isImg"/>
+        <result column="type" property="type"/>
+        <result column="is_dir" property="isDir"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="fileOpusTreeItem" type="com.ruoyi.system.domain.vo.FolderOpusTreeItemVO">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO t_file_info(
+        <if test="url != null and url != ''">url, </if>
+        <if test="zipUrl != null and zipUrl != ''">zip_url, </if>
+        <if test="name != null and name != ''">"name", </if>
+        <if test="fileName != null and fileName != ''">file_name, </if>
+        <if test="suffix != null and suffix != ''">suffix, </if>
+        <if test="type != null and type != ''">"type", </if>
+        <if test="isDir != null and isDir != ''">is_dir, </if>
+        <if test="isImg != null and isImg != ''">is_img, </if>
+        <if test="parentId != null and parentId != ''">parent_id, </if>
+        <if test="updater != null and updater != ''">updater, </if>
+        <if test="updateTime != null">update_time, </if>
+        <if test="delFlag != null and delFlag != ''">del_flag, </if>
+            creator, create_time
+        ) VALUES (
+        <if test="url != null and url != ''">#{url}, </if>
+        <if test="zipUrl != null and zipUrl != ''">#{zipUrl}, </if>
+        <if test="name != null and name != ''">#{name}, </if>
+        <if test="fileName != null and fileName != ''">#{fileName}, </if>
+        <if test="suffix != null and suffix != ''">#{suffix}, </if>
+        <if test="type != null and type != ''">#{type}, </if>
+        <if test="isDir != null and isDir != ''">#{isDir}, </if>
+        <if test="isImg != null and isImg != ''">#{isImg}, </if>
+        <if test="parentId != null and parentId != ''">#{parentId}, </if>
+        <if test="updater != null and updater != ''">#{updater}, </if>
+        <if test="updateTime != null">#{updateTime}, </if>
+        <if test="delFlag != null and delFlag != ''">#{delFlag}, </if>
+            #{creator}, #{createTime}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_file_info
+        SET updater = #{updater},
+            update_time = #{updateTime}
+        <if test="url != null and url != ''">,url = #{url} </if>
+        <if test="zipUrl != null and zipUrl != ''">,zip_url = #{zipUrl} </if>
+        <if test="name != null and name != ''">,"name" = #{name} </if>
+        <if test="fileName != null and fileName != ''">,file_name = #{fileName} </if>
+        <if test="suffix != null and suffix != ''">,suffix = #{suffix} </if>
+        <if test="type != null and type != ''">,"type" = #{type} </if>
+        <if test="isDir != null and isDir != ''">,is_dir = #{isDir} </if>
+        <if test="isImg != null and isImg != ''">, is_img = #{isImg} </if>
+        <if test="parentId != null and parentId != ''">,parent_id = #{parentId} </if>
+        <if test="delFlag != null and delFlag != ''">,del_flag = #{delFlag} </if>
+        WHERE id = #{id}
+    </update>
+
+    <update id="deleteAll">
+        <if test="fileInfoIds != null and fileInfoIds.size > 0">
+            UPDATE t_file_info
+            SET del_flag = '1'
+            WHERE
+            <foreach collection="fileInfoIds" open=" id IN (" item="fileInfoId" separator="," close=")">
+                #{fileInfoId}
+            </foreach>
+            OR
+            <foreach collection="fileInfoIds" open=" parent_id IN (" item="fileInfoId" separator="," close=")">
+                #{fileInfoId}::TEXT
+            </foreach>
+        </if>
+    </update>
+
+    <select id="findDicByNameAndParentIdAndCreateId" resultMap="fileInfo">
+        SELECT id, url, zip_url, "name", file_name, suffix, is_img, "type", is_dir, parent_id, creator, create_time, updater, update_time
+        FROM t_file_info
+        WHERE is_dir = 'Y' AND file_name = #{name} AND creator = #{creatorId} AND parent_id = #{parentId}::TEXT AND del_flag = '0'
+    </select>
+
+    <select id="get" resultMap="fileInfo">
+        SELECT tfi.id, tfi.url, tfi.zip_url, tfi."name", tfi.file_name, tfi.suffix, tfi.is_img, tfi."type", tfi.is_dir, tfi.parent_id, tfi.creator, tfi.create_time, tfi.updater, tfi.update_time
+        FROM t_file_info tfi
+        WHERE tfi.id = #{id} AND tfi.del_flag = '0'
+    </select>
+
+    <select id="getIgnoreDelete" resultMap="fileInfo">
+        SELECT tfi.id, tfi.url, tfi.zip_url, tfi."name", tfi.file_name, tfi.suffix, tfi.is_img, tfi."type", tfi.is_dir, tfi.parent_id, tfi.creator, tfi.create_time, tfi.updater, tfi.update_time
+        FROM t_file_info tfi
+        WHERE tfi.id = #{id}
+    </select>
+
+    <select id="getChildrenFolderIds" resultType="java.lang.Long">
+        SELECT tfi.id
+        FROM t_file_info tfi
+        WHERE tfi.parent_id = #{id}::TEXT AND tfi.is_dir = 'Y' AND tfi.del_flag = '0'
+    </select>
+
+    <select id="getChildrenFolders" resultMap="fileOpusTreeItem">
+        SELECT tfi.id, tfi.file_name AS "name", 1 AS "type", tfi.parent_id, tfi.create_time
+        FROM t_file_info tfi
+        WHERE tfi.is_dir = 'Y' AND tfi.parent_id = #{parentId}::TEXT AND tfi.creator = #{creatorId} AND tfi.del_flag = '0'
+        <if test="name != null and name != ''">
+            AND tfi.file_name LIKE CONCAT('%', #{name}::TEXT, '%')
+        </if>
+        ORDER BY tfi.create_time
+    </select>
+
+    <select id="getChildrenFolderInfo" resultMap="fileInfo">
+        SELECT tfi.id, tfi.url, tfi.zip_url, tfi."name", tfi.file_name, tfi.suffix, tfi.is_img, tfi."type", tfi.is_dir, tfi.parent_id, tfi.creator, tfi.create_time, tfi.updater, tfi.update_time
+        FROM t_file_info tfi
+        WHERE tfi.is_dir = 'Y' AND tfi.parent_id = #{parentId}::TEXT AND tfi.creator = #{userId} AND tfi.del_flag = '0'
+        <if test="name != null and name != ''">
+            AND tfi.file_name LIKE CONCAT('%', #{name}::TEXT, '%')
+        </if>
+        ORDER BY tfi.create_time DESC
+    </select>
+
+    <select id="getFileName" resultType="java.lang.String">
+        SELECT tfi.file_name
+        FROM t_file_info tfi
+        WHERE tfi.id = #{fileId}
+    </select>
+
+    <select id="getFile" resultMap="fileInfo">
+        SELECT tfi.id, tfi.url, tfi.zip_url, tfi."name", tfi.file_name, tfi.suffix, tfi.is_img, tfi."type", tfi.is_dir, tfi.parent_id, tfi.creator, tfi.create_time, tfi.updater, tfi.update_time
+        FROM t_file_info tfi
+        WHERE tfi.is_dir = 'Y' AND tfi.del_flag = '0' AND tfi.parent_id = #{parentId}::TEXT AND tfi.creator = #{userId} AND tfi.file_name = #{fileName}
+    </select>
+
+</mapper>

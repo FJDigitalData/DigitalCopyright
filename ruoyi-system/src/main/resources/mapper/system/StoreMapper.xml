@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.system.mapper.StoreMapper">
+
+    <resultMap id="storeInfo" type="com.ruoyi.system.domain.Store">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="company_id" property="companyId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="storeVOInfo" type="com.ruoyi.system.domain.vo.StoreVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="company_id" property="companyId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="creatorName" property="creatorName"/>
+        <result column="updaterName" property="updaterName"/>
+    </resultMap>
+
+    <insert id="add" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        INSERT INTO t_store("name", company_id, del_flag, creator, create_time, updater, update_time)
+        VALUES (#{name}, #{companyId}, #{delFlag}, #{creator}, #{createTime}, #{updater}, #{updateTime})
+    </insert>
+
+    <update id="update">
+        UPDATE t_store
+        SET "name" = #{name},
+            company_id = #{companyId},
+            del_flag = #{delFlag},
+            updater = #{updater},
+            update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="getById" resultMap="storeInfo">
+        SELECT id, "name", company_id, del_flag, creator, create_time, updater, update_time
+        FROM t_store
+        WHERE id = #{id}
+    </select>
+
+    <select id="getByNameAndCompanyId" resultMap="storeInfo">
+        SELECT id, "name", company_id, del_flag, creator, create_time, updater, update_time
+        FROM t_store
+        WHERE  "name" = #{name} AND company_id = #{companyId}
+    </select>
+
+    <select id="list" resultMap="storeVOInfo">
+        SELECT ts.id, ts."name", ts.company_id, ts.del_flag, ts.creator, ts.create_time, ts.updater, ts.update_time,
+                su1.nick_name AS creatorName, su2.nick_name AS updaterName
+        FROM t_store ts
+        LEFT JOIN sys_user su1 ON su1.user_id = ts.creator
+        LEFT JOIN sys_user su2 ON su2.user_id = ts.updater
+        WHERE ts.del_flag = '0'
+        <if test="name != null and name != ''">
+            AND ts."name" LIKE CONCAT('%', #{name}::TEXT, '%')
+        </if>
+        <if test="companyId != null and companyId != ''">
+            AND ts.company_id = #{companyId}
+        </if>
+        ORDER BY ts.create_time DESC
+    </select>
+
+</mapper>

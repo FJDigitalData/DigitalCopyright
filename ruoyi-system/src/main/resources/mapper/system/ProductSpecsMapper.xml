@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.system.mapper.ProductSpecsMapper">
+
+    <resultMap id="productSpecs" type="com.ruoyi.system.domain.ProductSpecs">
+        <result column="goods_id" property="goodsId"/>
+        <result column="specs_name" property="specsName"/>
+        <result column="specs_value" property="specsValue"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="add">
+        INSERT INTO r_product_specs (goods_id, specs_name, specs_value, creator, create_time) VALUES (#{goodsId}, #{specsName}, #{specsValue}, #{creator}, #{createTime})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM r_product_specs WHERE goods_id = #{goodsId}
+    </delete>
+
+    <select id="getList" resultMap="productSpecs">
+        SELECT goods_id, specs_name, specs_value, creator, create_time
+        FROM r_product_specs
+        WHERE goods_id = #{goodsId}
+    </select>
+
+</mapper>

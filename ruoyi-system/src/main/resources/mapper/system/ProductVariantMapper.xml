@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.system.mapper.ProductVariantMapper">
+
+    <resultMap id="productVariant" type="com.ruoyi.system.domain.ProductVariant">
+        <id column="id" property="id"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="photo" property="photo"/>
+        <result column="specs_info" property="specsInfo"/>
+        <result column="stock" property="stock"/>
+        <result column="price" property="price"/>
+        <result column="price_code" property="priceCode"/>
+        <result column="gather_price" property="gatherPrice"/>
+        <result column="gather_price_code" property="gatherPriceCode"/>
+        <result column="size_map" property="sizeMap"/>
+        <result column="promotion_price" property="promotionPrice"/>
+        <result column="promotion_price_code" property="promotionPriceCode"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="productVariantInfo" type="com.ruoyi.system.domain.vo.ProductVariantVO">
+        <id column="id" property="id"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="photo" property="photo"/>
+        <result column="specs_info" property="specsInfo"/>
+        <result column="stock" property="stock"/>
+        <result column="price" property="price"/>
+        <result column="price_code" property="priceCode"/>
+        <result column="gather_price" property="gatherPrice"/>
+        <result column="gather_price_code" property="gatherPriceCode"/>
+        <result column="size_map" property="sizeMap"/>
+        <result column="promotion_price" property="promotionPrice"/>
+        <result column="promotion_price_code" property="promotionPriceCode"/>
+        <result column="creator" property="creator"/>
+        <result column="creatorNickName" property="creatorNickName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="updaterNickName" property="updaterNickName"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="add">
+        INSERT INTO r_product_variant (id, goods_id, photo, specs_info, stock, price, price_code, creator, create_time, updater, update_time
+        <if test="sizeMap != null and sizeMap != ''">
+            ,size_map
+        </if>
+        <if test="promotionPrice != null">
+            ,promotion_price
+        </if>
+        <if test="promotionPriceCode != null and promotionPriceCode != ''">
+            ,promotion_price_code
+        </if>
+        <if test="gatherPrice != null">
+            , gather_price
+        </if>
+        <if test="gatherPriceCode != null and gatherPriceCode != ''">
+            , gather_price_code
+        </if>
+        ) VALUES (#{id}, #{goodsId}, #{photo}, #{specsInfo}, #{stock}, #{price}, #{priceCode}, #{creator}, #{createTime}, #{updater}, #{updateTime}
+        <if test="sizeMap != null and sizeMap != ''">
+            ,#{sizeMap}
+        </if>
+        <if test="promotionPrice != null">
+            ,#{promotionPrice}
+        </if>
+        <if test="promotionPriceCode != null and promotionPriceCode != ''">
+            ,#{promotionPriceCode}
+        </if>
+        <if test="gatherPrice != null">
+            , #{gatherPrice}
+        </if>
+        <if test="gatherPriceCode != null and gatherPriceCode != ''">
+            , #{gatherPriceCode}
+        </if>
+        )
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM r_product_variant WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByGoodsId">
+        DELETE FROM r_product_variant WHERE goods_id = #{goodsId}
+    </delete>
+
+    <select id="getList" resultMap="productVariant">
+        SELECT id, goods_id, photo, specs_info, stock, price, price_code, size_map, promotion_price, promotion_price_code, creator, create_time, updater, update_time, gather_price, gather_price_code
+        FROM r_product_variant
+        WHERE goods_id = #{goodsId}
+    </select>
+
+    <select id="getListInfo" resultMap="productVariantInfo">
+        SELECT rpv.id, rpv.goods_id, rpv.photo, rpv.specs_info, rpv.stock, rpv.price, rpv.price_code, rpv.size_map, rpv.promotion_price, rpv.promotion_price_code,
+               rpv.creator, rpv.create_time, rpv.updater, rpv.update_time, rpv.gather_price, rpv.gather_price_code, su1.nick_name AS creatorNickName, su2.nick_name AS updaterNickName
+        FROM r_product_variant rpv
+        LEFT JOIN sys_user su1 ON su1.user_id = rpv.creator
+        LEFT JOIN sys_user su2 ON su2.user_id = rpv.updater
+        WHERE rpv.goods_id = #{goodsId}
+    </select>
+
+</mapper>

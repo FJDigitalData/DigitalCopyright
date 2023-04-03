@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.system.mapper.OpusMapper">
+
+    <resultMap id="opusMap" type="com.ruoyi.system.domain.Opus">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="style" property="style"/>
+        <result column="inspiration" property="inspiration"/>
+        <result column="is_open" property="isOpen"/>
+        <result column="is_freeze" property="isFreeze"/>
+        <result column="file_id" property="fileId"/>
+        <result column="material_file_id" property="materialFileId"/>
+        <result column="copyright_owner" property="copyrightOwner"/>
+        <result column="apply_status" property="applyStatus"/>
+        <result column="apply_time" property="applyTime"/>
+        <result column="apply_remark" property="applyRemark"/>
+        <result column="block_identity" property="blockIdentity"/>
+        <result column="hot" property="hot"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="price" property="price"/>
+    </resultMap>
+
+    <resultMap id="opusInfoMap" type="com.ruoyi.system.domain.vo.OpusVO">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="style" property="style"/>
+        <result column="styleName" property="styleName"/>
+        <result column="inspiration" property="inspiration"/>
+        <result column="is_open" property="isOpen"/>
+        <result column="is_freeze" property="isFreeze"/>
+        <result column="file_id" property="fileId"/>
+        <result column="fileZipUrl" property="fileZipUrl"/>
+        <result column="material_file_id" property="materialFileId"/>
+        <result column="copyright_owner" property="copyrightOwner"/>
+        <result column="apply_status" property="applyStatus"/>
+        <result column="apply_time" property="applyTime"/>
+        <result column="apply_remark" property="applyRemark"/>
+        <result column="block_identity" property="blockIdentity"/>
+        <result column="hot" property="hot"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="price" property="price"/>
+    </resultMap>
+
+    <resultMap id="empowerMap" type="com.ruoyi.system.domain.Empower">
+        <result column="opus_id" property="opusId"/>
+        <result column="user_id" property="userId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <resultMap id="empowerInfoMap" type="com.ruoyi.system.domain.vo.EmpowerVO">
+        <result column="opus_id" property="opusId"/>
+        <result column="user_id" property="userId"/>
+        <result column="userName" property="userName"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <resultMap id="fileOpusTreeItem" type="com.ruoyi.system.domain.vo.FolderOpusTreeItemVO">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+
+    <resultMap id="tagInfo" type="com.ruoyi.system.domain.vo.TagVO">
+        <id column="id" property="id"/>
+        <result column="tag" property="tag"/>
+        <result column="style_id" property="styleId"/>
+        <result column="styleLabel" property="styleLabel"/>
+        <result column="creator" property="creator"/>
+        <result column="creatorName" property="creatorName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="updaterName" property="updaterName"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="add">
+        INSERT INTO t_opus(id, "name", style, inspiration, is_open, is_freeze, file_id, material_file_id, hot, del_flag, parent_id, creator, create_time, updater, update_time, price)
+        VALUES (#{id}, #{name}, #{style}, #{inspiration}, #{isOpen}, #{isFreeze}, #{fileId}, #{materialFileId}, #{hot}, #{delFlag}, #{parentId}, #{creator}, #{createTime}, #{updater}, #{updateTime}, #{price})
+    </insert>
+
+    <insert id="addOpusTag">
+        INSERT INTO r_opus_tag (opus_id, "tag")
+        <foreach collection="tags" open="VALUES " item="tag" separator=",">
+            (#{opusId}, #{tag})
+        </foreach>
+    </insert>
+
+    <insert id="insertEmpower">
+        INSERT INTO r_empower(opus_id, user_id, del_flag, creator, create_time) VALUES (#{opusId}, #{userId}, #{delFlag}, #{creator}, #{createTime})
+    </insert>
+
+    <insert id="addHot">
+        UPDATE t_opus SET hot = hot + 1 WHERE id = #{opusId}
+    </insert>
+
+    <insert id="insert">
+        INSERT INTO t_opus(id, creator, create_time
+        <if test="name != null and name != ''">
+            , "name"
+        </if>
+        <if test="style != null and style != ''">
+            , style
+        </if>
+        <if test="inspiration != null and inspiration != ''">
+            , inspiration
+        </if>
+        <if test="isOpen != null and isOpen != ''">
+            , is_open
+        </if>
+        <if test="isFreeze != null and isFreeze != ''">
+            , is_freeze
+        </if>
+        <if test="fileId != null">
+            , file_id
+        </if>
+        <if test="materialFileId != null">
+            , material_file_id
+        </if>
+        <if test="parentId != null">
+            , parent_id
+        </if>
+        <if test="price != null">
+            , price
+        </if>
+        <if test="delFlag != null and delFlag != '0'">
+            , del_flag
+        </if>
+        <if test="applyStatus != null and applyStatus != ''">
+            , apply_status
+        </if>
+        <if test="applyTime != null">
+            , apply_time
+        </if>
+        <if test="applyRemark != null and applyRemark != ''">
+            , apply_remark
+        </if>
+        <if test="blockIdentity != null and blockIdentity != ''">
+            , block_identity
+        </if>
+        <if test="copyrightOwner != null and copyrightOwner != 0">
+            , copyright_owner
+        </if>
+        <if test="updateTime != null">
+            , update_time
+        </if>
+        <if test="updater != null">
+            , updater
+        </if>
+        ) VALUES (#{id}, #{creator}, #{createTime}
+        <if test="name != null and name != ''">
+            , #{name}
+        </if>
+        <if test="style != null and style != ''">
+            , #{style}
+        </if>
+        <if test="inspiration != null and inspiration != ''">
+            , #{inspiration}
+        </if>
+        <if test="isOpen != null and isOpen != ''">
+            , #{isOpen}
+        </if>
+        <if test="isFreeze != null and isFreeze != ''">
+            , #{isFreeze}
+        </if>
+        <if test="fileId != null">
+            , #{fileId}
+        </if>
+        <if test="materialFileId != null">
+            , #{materialFileId}
+        </if>
+        <if test="parentId != null">
+            , #{parentId}
+        </if>
+        <if test="price != null">
+            , #{price}
+        </if>
+        <if test="delFlag != null and delFlag != '0'">
+            , #{delFlag}
+        </if>
+        <if test="applyStatus != null and applyStatus != ''">
+            , #{applyStatus}
+        </if>
+        <if test="applyTime != null">
+            , #{applyTime}
+        </if>
+        <if test="applyRemark != null and applyRemark != ''">
+            , #{applyRemark}
+        </if>
+        <if test="blockIdentity != null and blockIdentity != ''">
+            , #{blockIdentity}
+        </if>
+        <if test="copyrightOwner != null and copyrightOwner != 0">
+            , #{copyrightOwner}
+        </if>
+        <if test="updateTime != null">
+            , #{updateTime}
+        </if>
+        <if test="updater != null">
+            , #{updater}
+        </if>
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE t_opus
+        SET updater = #{updater},
+            update_time =  #{updateTime}
+        <if test="name != null and name != ''">
+            , "name" = #{name}
+        </if>
+        <if test="style != null and style != ''">
+            , style = #{style}
+        </if>
+        <if test="inspiration != null and inspiration != ''">
+            , inspiration = #{inspiration}
+        </if>
+        <if test="isOpen != null and isOpen != ''">
+            , is_open = #{isOpen}
+        </if>
+        <if test="isFreeze != null and isFreeze != ''">
+            , is_freeze = #{isFreeze}
+        </if>
+        <if test="fileId != null">
+            , file_id = #{fileId}
+        </if>
+        <if test="materialFileId != null">
+            , material_file_id = #{materialFileId}
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            , del_flag = #{delFlag}
+        </if>
+        <if test="applyStatus != null and applyStatus != ''">
+            , apply_status = #{applyStatus}
+        </if>
+        <if test="applyTime != null">
+            , apply_time = #{applyTime}
+        </if>
+        <if test="applyRemark != null">
+            , apply_remark = #{applyRemark}
+        </if>
+        <if test="parentId != null">
+            , parent_id = #{parentId}
+        </if>
+        <if test="price != null">
+            , price = #{price}
+        </if>
+        <if test="copyrightOwner != null and copyrightOwner != 0">
+            , copyright_owner = #{copyrightOwner}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateEmpower">
+        UPDATE r_empower
+        SET del_flag = #{delFlag},
+            creator = #{creator},
+            create_time = #{createTime}
+        WHERE opus_id = #{opusId} AND user_id = #{userId}
+    </update>
+
+    <update id="batchDeleteByParent">
+        UPDATE t_opus
+        SET del_flag = '1'
+        WHERE
+        <foreach collection="parentIds" open=" parent_id IN (" item="parentId" separator="," close=")">
+            #{parentId}
+        </foreach>
+    </update>
+
+    <delete id="cleanOpusTag">
+        DELETE FROM r_opus_tag WHERE opus_id = #{opusId}
+    </delete>
+
+    <select id="findByNameAndParentId" resultMap="opusMap">
+        SELECT t.id, t.name, t.style, t.inspiration, t.is_open, t.is_freeze, t.file_id, t.material_file_id, t.copyright_owner, t.apply_status,
+               t.apply_time, t.apply_remark, t.block_identity, t.hot, t.del_flag, t.creator, t.create_time, t.updater, t.update_time, t.parent_id, t.price
+        FROM t_opus t
+        WHERE t.name = #{name} AND t.parent_id = #{parentId} AND t.del_flag = '0'
+    </select>
+
+    <select id="get" resultMap="opusMap">
+        SELECT t.id, t.name, t.style, t.inspiration, t.is_open, t.is_freeze, t.file_id, t.material_file_id, t.copyright_owner, t.apply_status,
+               t.apply_time, t.apply_remark, t.block_identity, t.hot, t.del_flag, t.creator, t.create_time, t.updater, t.update_time, t.parent_id, t.price
+        FROM t_opus t
+        WHERE t.id = #{id} AND t.del_flag = '0'
+    </select>
+
+    <select id="getIgnoreDelete" resultMap="opusMap">
+        SELECT t.id, t.name, t.style, t.inspiration, t.is_open, t.is_freeze, t.file_id, t.material_file_id, t.copyright_owner, t.apply_status,
+               t.apply_time, t.apply_remark, t.block_identity, t.hot, t.del_flag, t.creator, t.create_time, t.updater, t.update_time, t.parent_id, t.price
+        FROM t_opus t
+        WHERE t.id = #{id}
+    </select>
+
+    <select id="getEmpower" resultMap="empowerMap">
+        SELECT opus_id, user_id, del_flag, creator, create_time
+        FROM r_empower
+        WHERE opus_id = #{opusId} AND user_id = #{userId}
+    </select>
+
+    <select id="getEmpowerList" resultMap="empowerInfoMap">
+        SELECT re.opus_id, re.user_id, re.create_time, su.nick_name AS userName
+        FROM r_empower re
+        LEFT JOIN sys_user su on su.user_id = re.user_id
+        WHERE re.del_flag = '0' AND re.opus_id = #{opusId}
+        ORDER BY re.creator DESC
+    </select>
+
+    <select id="getPublicPage" resultMap="opusInfoMap">
+        SELECT DISTINCT t.id, sdd.dict_label AS styleName, tfi.zip_url AS fileZipUrl, t.name, t.style, t.inspiration, t.is_open, t.is_freeze, t.file_id,
+                        t.material_file_id, t.copyright_owner, t.apply_status, t.apply_time, t.apply_remark, t.block_identity, t.hot, t.del_flag,
+                        t.creator, t.create_time, t.parent_id, t.price
+        FROM t_opus t
+        JOIN sys_dict_data sdd on sdd.dict_code = t.style::BIGINT
+        JOIN t_file_info tfi ON tfi.id = t.file_id
+        <if test="tag != null or key != null">
+            JOIN r_opus_tag rot ON rot.opus_id = t.id
+            JOIN t_tag tt ON rot.tag = tt.id
+        </if>
+        WHERE t.del_flag = '0' AND t.is_open = '1' AND t.is_freeze = '0' AND t.apply_status = '3'
+        <if test="tag != null and tag != ''">
+            AND tt.tag LIKE CONCAT('%', #{tag}::TEXT, '%')
+        </if>
+        <if test="name != null and name != ''">
+            AND t.name LIKE CONCAT('%', #{name}::TEXT, '%')
+        </if>
+        <if test="style != null and style != ''">
+            AND sdd.dict_label LIKE CONCAT('%', #{style}::TEXT, '%')
+        </if>
+        <if test="key != null and key != ''">
+            AND (t.name LIKE CONCAT('%', #{key}::TEXT, '%') OR tt.tag LIKE CONCAT('%', #{key}::TEXT, '%') OR sdd.dict_label LIKE CONCAT('%', #{key}::TEXT, '%'))
+        </if>
+        ORDER BY t.hot DESC
+    </select>
+
+    <select id="getPage" resultMap="opusInfoMap">
+        SELECT DISTINCT t.id, sdd.dict_label AS styleName, t.name, t.style, t.inspiration, t.is_open, t.is_freeze, t.file_id,
+                        t.material_file_id, t.copyright_owner, t.apply_status, t.apply_time, t.apply_remark, t.block_identity, t.hot, t.del_flag,
+                        t.creator, t.create_time, t.parent_id, t.price
+                        <if test="shouldContainFileUrl">, tfi1.zip_url AS fileZipUrl</if>
+                        <if test="shouldContainMaterialFileUrl">, tfi2.url AS materialFileUrl</if>
+        FROM t_opus t
+        JOIN sys_dict_data sdd on sdd.dict_code = t.style::BIGINT
+        <if test="key != null and key != ''">
+            JOIN r_opus_tag rot ON rot.opus_id = t.id
+            JOIN t_tag tt ON rot.tag = tt.id
+        </if>
+        <if test="shouldContainFileUrl">
+            LEFT JOIN t_file_info tfi1 ON tfi1.id = t.file_id
+        </if>
+        <if test="shouldContainMaterialFileUrl">
+            LEFT JOIN t_file_info tfi2 ON tfi2.id = t.material_file_id
+        </if>
+        <if test="onlyAuthorization">
+            JOIN r_empower re ON re.opus_id = t.id
+        </if>
+        WHERE t.del_flag = '0'
+        <if test="style != null and style != ''">
+            AND t.style = #{style}
+        </if>
+        <if test="isOpen != null and isOpen != ''">
+            AND t.is_open = #{isOpen}
+        </if>
+        <if test="isFreeze != null and isFreeze != ''">
+            AND t.is_freeze = #{isFreeze}
+        </if>
+        <if test="uploadTime != null and uploadTime != ''">
+            AND TO_CHAR(t.create_time::TIMESTAMP with time zone, 'YYYY-MM-DD') = #{uploadTime}
+        </if>
+        <if test="key != null and key != ''">
+            AND (t.name LIKE CONCAT('%', #{key}::TEXT, '%') OR tt.tag LIKE CONCAT('%', #{key}::TEXT, '%'))
+        </if>
+        <if test="onlyAuthorization">
+            AND (re.del_flag != '1'
+                <if test="userId != null">
+                    AND re.user_id = ${userId}
+                </if>
+            )
+        </if>
+        <if test="applyStatus != null and applyStatus != ''">
+            <choose>
+                <when test="applyStatus == 4">
+                    AND t.apply_status != '0'
+                </when>
+                <otherwise>
+                    AND t.apply_status = #{applyStatus}
+                </otherwise>
+            </choose>
+        </if>
+        <choose>
+            <when test="sortType != null and sortType == 2">
+                ORDER BY re.create_time <if test="orderType != null and orderType == 1">DESC</if>
+            </when>
+            <when test="sortType != null and sortType == 3">
+                ORDER BY t.apply_time <if test="orderType != null and orderType == 1">DESC</if>
+            </when>
+            <when test="sortType != null and sortType == 4">
+                ORDER BY t.apply_status <if test="orderType != null and orderType == 1">DESC</if>
+            </when>
+            <when test="sortType != null and sortType == 5">
+                ORDER BY t.hot <if test="orderType != null and orderType == 1">DESC</if>
+            </when>
+            <otherwise>
+                ORDER BY t.create_time <if test="orderType != null and orderType == 1">DESC</if>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getChildrenInfo" resultMap="opusInfoMap">
+        SELECT DISTINCT t.id, t.name, t.style, t.inspiration, t.is_open, t.is_freeze, t.file_id, t.material_file_id,
+                        t.copyright_owner, t.apply_status, t.apply_time, t.apply_remark, t.block_identity, t.hot, t.del_flag,
+                        t.creator, t.create_time, t.parent_id, t.price, tfi1.zip_url AS fileZipUrl
+        FROM t_opus t
+        JOIN t_file_info tfi1 ON tfi1.id = t.file_id
+        WHERE t.del_flag = '0' AND t.parent_id = #{parentId} AND t.creator = #{userId}
+        <if test="name != null and name != ''">
+            AND t.name LIKE CONCAT('%', #{name}::TEXT, '%')
+        </if>
+        ORDER BY t.create_time DESC
+    </select>
+
+    <select id="getChildrenOpus" resultMap="fileOpusTreeItem">
+        SELECT op.id, op.name, 2 AS "type", op.parent_id, op.create_time
+        FROM t_opus op
+        WHERE op.parent_id = #{parentId} AND op.creator = #{userId} AND op.del_flag = '0'
+        <if test="name != null and name != ''">
+            AND op.name LIKE CONCAT('%', #{name}::TEXT, '%')
+        </if>
+        ORDER BY op.create_time
+    </select>
+
+    <select id="getTagsList" resultMap="tagInfo">
+        SELECT t.id, t.tag, t.style_id, t.creator, t.create_time, t.updater, t.update_time
+        FROM r_opus_tag rot
+        JOIN t_tag t ON t.id = rot.tag
+        WHERE opus_id = #{opusId}
+    </select>
+
+    <select id="checkAuthorization" resultType="java.lang.String">
+        SELECT opus_id
+        FROM r_empower
+        WHERE opus_id = #{opusId} AND user_id = #{userId} AND del_flag = '0'
+    </select>
+
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.system.mapper.TagMapper">
+
+    <resultMap id="tagInfo" type="com.ruoyi.system.domain.vo.TagVO">
+        <id column="id" property="id"/>
+        <result column="tag" property="tag"/>
+        <result column="style_id" property="styleId"/>
+        <result column="styleLabel" property="styleLabel"/>
+        <result column="creator" property="creator"/>
+        <result column="creatorName" property="creatorName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="updaterName" property="updaterName"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <select id="list" resultMap="tagInfo">
+        SELECT tt.id, tt.tag, tt.style_id, tt.creator, tt.create_time, tt.updater, tt.update_time,
+               su1.nick_name AS creatorName, su2.nick_name AS updaterName, sdd.dict_label AS styleLabel
+        FROM t_tag tt
+        LEFT JOIN sys_user su1 ON su1.user_id = tt.creator
+        LEFT JOIN sys_user su2 ON su2.user_id = tt.updater
+        LEFT JOIN sys_dict_data sdd on sdd.dict_code = tt.style_id::BIGINT
+        <where>
+            <if test="styleId != null and styleId != ''">
+                AND tt.style_id = #{styleId}
+            </if>
+            <if test="tag != null and tag != ''">
+                AND tt.tag LIKE CONCAT('%', #{tag}::TEXT, '%')
+            </if>
+            <if test="searchKey != null and searchKey != ''">
+                AND sdd.dict_label LIKE CONCAT('%', #{searchKey}::TEXT, '%')
+            </if>
+        </where>
+        ORDER BY tt.create_time DESC
+    </select>
+
+</mapper>

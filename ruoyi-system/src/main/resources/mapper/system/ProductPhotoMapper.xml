@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.system.mapper.ProductPhotoMapper">
+
+    <insert id="add">
+        <foreach collection="list" item="p" open="INSERT INTO r_product_photo (goods_id, photo_type, photo_index, photo) VALUES " separator="," close=";">
+            (#{p.goodsId}, #{p.photoType}, #{p.photoIndex}, #{p.photo})
+        </foreach>
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM r_product_photo WHERE goods_id = #{goodsId}
+    </delete>
+
+    <select id="getPhoto" resultType="java.lang.String">
+        SELECT photo
+        FROM r_product_photo
+        WHERE goods_id = #{goodsId} AND photo_type = #{photoType}
+        ORDER BY photo_index
+    </select>
+
+</mapper>

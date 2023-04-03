@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.system.mapper.ErpProductMapper">
+
+    <resultMap id="product" type="com.ruoyi.system.domain.ErpProduct">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="product_price" property="productPrice"/>
+        <result column="product_price_code" property="productPriceCode"/>
+        <result column="gather_price" property="gatherPrice"/>
+        <result column="gather_price_code" property="gatherPriceCode"/>
+        <result column="origin_name" property="originName"/>
+        <result column="origin_url" property="originUrl"/>
+        <result column="describe" property="describe"/>
+        <result column="point_one" property="pointOne"/>
+        <result column="point_two" property="pointTwo"/>
+        <result column="point_three" property="pointThree"/>
+        <result column="point_four" property="pointFour"/>
+        <result column="point_five" property="pointFive"/>
+        <result column="sell_type" property="sellType"/>
+        <result column="component_id" property="componentId"/>
+        <result column="tax_code" property="taxCode"/>
+        <result column="search_key" property="searchKey"/>
+        <result column="super_key" property="superKey"/>
+        <result column="stock" property="stock"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="product_sku" property="productSku"/>
+        <result column="brand" property="brand"/>
+        <result column="manufacturer" property="manufacturer"/>
+        <result column="area_id" property="areaId"/>
+        <result column="store_id" property="storeId"/>
+        <result column="product_type" property="productType"/>
+        <result column="category" property="category"/>
+        <result column="detail_type" property="detailType"/>
+        <result column="origin_country" property="originCountry"/>
+        <result column="nature" property="nature"/>
+        <result column="length" property="length"/>
+        <result column="width" property="width"/>
+        <result column="height" property="height"/>
+        <result column="weight" property="weight"/>
+        <result column="status" property="status"/>
+        <result column="adopt_status" property="adoptStatus"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="creator" property="creator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="erpProductInfo" type="com.ruoyi.system.domain.vo.ErpProductVO">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="product_price" property="productPrice"/>
+        <result column="product_price_code" property="productPriceCode"/>
+        <result column="gather_price" property="gatherPrice"/>
+        <result column="gather_price_code" property="gatherPriceCode"/>
+        <result column="origin_name" property="originName"/>
+        <result column="origin_url" property="originUrl"/>
+        <result column="describe" property="describe"/>
+        <result column="point_one" property="pointOne"/>
+        <result column="point_two" property="pointTwo"/>
+        <result column="point_three" property="pointThree"/>
+        <result column="point_four" property="pointFour"/>
+        <result column="point_five" property="pointFive"/>
+        <result column="sell_type" property="sellType"/>
+        <result column="component_id" property="componentId"/>
+        <result column="tax_code" property="taxCode"/>
+        <result column="search_key" property="searchKey"/>
+        <result column="super_key" property="superKey"/>
+        <result column="stock" property="stock"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="product_sku" property="productSku"/>
+        <result column="brand" property="brand"/>
+        <result column="manufacturer" property="manufacturer"/>
+        <result column="area_id" property="areaId"/>
+        <result column="store_id" property="storeId"/>
+        <result column="product_type" property="productType"/>
+        <result column="category" property="category"/>
+        <result column="detail_type" property="detailType"/>
+        <result column="origin_country" property="originCountry"/>
+        <result column="nature" property="nature"/>
+        <result column="length" property="length"/>
+        <result column="width" property="width"/>
+        <result column="height" property="height"/>
+        <result column="weight" property="weight"/>
+        <result column="status" property="status"/>
+        <result column="adopt_status" property="adoptStatus"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="creator" property="creator"/>
+        <result column="creatorNickName" property="creatorNickName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="updater" property="updater"/>
+        <result column="updaterNickName" property="updaterNickName"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="add">
+        INSERT INTO t_erp_product(id, creator, create_time, updater, update_time
+        <if test="name != null and name != ''">
+            , "name"
+        </if>
+        <if test="parentId != null and parentId != ''">
+            , parent_id
+        </if>
+        <if test="productPrice != null">
+            , product_price
+        </if>
+        <if test="productPriceCode != null and productPriceCode != ''">
+            , product_price_code
+        </if>
+        <if test="gatherPrice != null">
+            , gather_price
+        </if>
+        <if test="gatherPriceCode != null and gatherPriceCode != ''">
+            , gather_price_code
+        </if>
+        <if test="originName != null and originName != ''">
+            , origin_name
+        </if>
+        <if test="originUrl != null and originUrl != ''">
+            , origin_url
+        </if>
+        <if test="describe != null">
+            , describe
+        </if>
+        <if test="pointOne != null and pointOne != ''">
+            , point_one
+        </if>
+        <if test="pointTwo != null and pointTwo != ''">
+            , point_two
+        </if>
+        <if test="pointThree != null and pointThree != ''">
+            , point_three
+        </if>
+        <if test="pointFour != null and pointFour != ''">
+            , point_four
+        </if>
+        <if test="pointFive != null and pointFive != ''">
+            , point_five
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            , del_flag
+        </if>
+        <if test="sellType != null">
+            , sell_type
+        </if>
+        <if test="componentId != null and componentId != ''">
+            , component_id
+        </if>
+        <if test="taxCode != null and taxCode != ''">
+            , tax_code
+        </if>
+        <if test="searchKey != null and searchKey != ''">
+            , search_key
+        </if>
+        <if test="superKey != null and superKey != ''">
+            , super_key
+        </if>
+        <if test="stock != null">
+            , stock
+        </if>
+        <if test="deliveryTime != null">
+            , delivery_time
+        </if>
+        <if test="productSku != null and productSku != ''">
+            , product_sku
+        </if>
+        <if test="brand != null and brand != ''">
+            , brand
+        </if>
+        <if test="manufacturer != null and manufacturer != ''">
+            , manufacturer
+        </if>
+        <if test="areaId != null and areaId != ''">
+            , area_id
+        </if>
+        <if test="storeId != null and storeId != ''">
+            , store_id
+        </if>
+        <if test="productType != null and productType != ''">
+            , product_type
+        </if>
+        <if test="category != null and category != ''">
+            , "category"
+        </if>
+        <if test="detailType != null and detailType != ''">
+            , detail_type
+        </if>
+        <if test="originCountry != null and originCountry != ''">
+            , origin_country
+        </if>
+        <if test="nature != null and nature != ''">
+            , nature
+        </if>
+        <if test="length != null">
+            , "length"
+        </if>
+        <if test="width != null">
+            , width
+        </if>
+        <if test="height != null">
+            , height
+        </if>
+        <if test="weight != null">
+            , weight
+        </if>
+        <if test="status != null">
+            , status
+        </if>
+        <if test="adoptStatus != null">
+            , adopt_status
+        </if>
+        ) VALUES (#{id}, #{creator}, #{createTime}, #{updater}, #{updateTime}
+        <if test="name != null and name != ''">
+            , #{name}
+        </if>
+        <if test="parentId != null and parentId != ''">
+            , #{parentId}
+        </if>
+        <if test="productPrice != null">
+            , #{productPrice}
+        </if>
+        <if test="productPriceCode != null and productPriceCode != ''">
+            , #{productPriceCode}
+        </if>
+        <if test="gatherPrice != null">
+            , #{gatherPrice}
+        </if>
+        <if test="gatherPriceCode != null and gatherPriceCode != ''">
+            , #{gatherPriceCode}
+        </if>
+        <if test="originName != null and originName != ''">
+            , #{originName}
+        </if>
+        <if test="originUrl != null and originUrl != ''">
+            , #{originUrl}
+        </if>
+        <if test="describe != null">
+            , #{describe}
+        </if>
+        <if test="pointOne != null and pointOne != ''">
+            , #{pointOne}
+        </if>
+        <if test="pointTwo != null and pointTwo != ''">
+            , #{pointTwo}
+        </if>
+        <if test="pointThree != null and pointThree != ''">
+            , #{pointThree}
+        </if>
+        <if test="pointFour != null and pointFour != ''">
+            , #{pointFour}
+        </if>
+        <if test="pointFive != null and pointFive != ''">
+            , #{pointFive}
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            , #{delFlag}
+        </if>
+        <if test="sellType != null">
+            , #{sellType}
+        </if>
+        <if test="componentId != null and componentId != ''">
+            , #{componentId}
+        </if>
+        <if test="taxCode != null and taxCode != ''">
+            , #{taxCode}
+        </if>
+        <if test="searchKey != null and searchKey != ''">
+            , #{searchKey}
+        </if>
+        <if test="superKey != null and superKey != ''">
+            , #{superKey}
+        </if>
+        <if test="stock != null">
+            , #{stock}
+        </if>
+        <if test="deliveryTime != null">
+            , #{deliveryTime}
+        </if>
+        <if test="productSku != null and productSku != ''">
+            , #{productSku}
+        </if>
+        <if test="brand != null and brand != ''">
+            , #{brand}
+        </if>
+        <if test="manufacturer != null and manufacturer != ''">
+            , #{manufacturer}
+        </if>
+        <if test="areaId != null and areaId != ''">
+            , #{areaId}
+        </if>
+        <if test="storeId != null and storeId != ''">
+            , #{storeId}
+        </if>
+        <if test="productType != null and productType != ''">
+            , #{productType}
+        </if>
+        <if test="category != null and category != ''">
+            , #{category}
+        </if>
+        <if test="detailType != null and detailType != ''">
+            , #{detailType}
+        </if>
+        <if test="originCountry != null and originCountry != ''">
+            , #{originCountry}
+        </if>
+        <if test="nature != null and nature != ''">
+            , #{nature}
+        </if>
+        <if test="length != null">
+            , #{length}
+        </if>
+        <if test="width != null">
+            , #{width}
+        </if>
+        <if test="height != null">
+            , #{height}
+        </if>
+        <if test="weight != null">
+            , #{weight}
+        </if>
+        <if test="status != null">
+            , #{status}
+        </if>
+        <if test="adoptStatus != null">
+            , #{adoptStatus}
+        </if>
+        )
+    </insert>
+
+    <insert id="addRelationOpus">
+        INSERT INTO r_product_opus(product_id, opus_id) VALUES (#{productId}, #{opusId})
+    </insert>
+
+    <select id="getRelationOpus" resultType="java.lang.String">
+        SELECT opus_id FROM r_product_opus WHERE product_id = #{productId}
+    </select>
+
+    <delete id="deleteRelationOpus">
+        DELETE FROM r_product_opus WHERE product_id = #{productId}
+    </delete>
+
+    <update id="logicDelete">
+        UPDATE t_erp_product SET del_flag = '1'  WHERE id = #{id}
+    </update>
+
+    <update id="update">
+        UPDATE t_erp_product
+        SET updater = #{updater}, update_time = #{updateTime}
+        <if test="name != null and name != ''">
+            , "name" = #{name}
+        </if>
+        <if test="productPrice != null">
+            , product_price = #{productPrice}
+        </if>
+        <if test="productPriceCode != null and productPriceCode != ''">
+            , product_price_code = #{productPriceCode}
+        </if>
+        <if test="gatherPrice != null">
+            , gather_price = #{gatherPrice}
+        </if>
+        <if test="gatherPriceCode != null and gatherPriceCode != ''">
+            , gather_price_code = #{gatherPriceCode}
+        </if>
+        <if test="originName != null and originName != ''">
+            , origin_name = #{originName}
+        </if>
+        <if test="originUrl != null and originUrl != ''">
+            , origin_url = #{originUrl}
+        </if>
+        <if test="describe != null">
+            , describe = #{describe}
+        </if>
+        <if test="pointOne != null and pointOne != ''">
+            , point_one = #{pointOne}
+        </if>
+        <if test="pointTwo != null and pointTwo != ''">
+            , point_two = #{pointTwo}
+        </if>
+        <if test="pointThree != null and pointThree != ''">
+            , point_three = #{pointThree}
+        </if>
+        <if test="pointFour != null and pointFour != ''">
+            , point_four = #{pointFour}
+        </if>
+        <if test="pointFive != null and pointFive != ''">
+            , point_five = #{pointFive}
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            , del_flag = #{delFlag}
+        </if>
+        <if test="sellType != null">
+            , sell_type = #{sellType}
+        </if>
+        <if test="componentId != null and componentId != ''">
+            , component_id = #{componentId}
+        </if>
+        <if test="taxCode != null and taxCode != ''">
+            , tax_code = #{taxCode}
+        </if>
+        <if test="searchKey != null and searchKey != ''">
+            , search_key = #{searchKey}
+        </if>
+        <if test="superKey != null and superKey != ''">
+            , super_key = #{superKey}
+        </if>
+        <if test="stock != null">
+            , stock = #{stock}
+        </if>
+        <if test="deliveryTime != null">
+            , delivery_time = #{deliveryTime}
+        </if>
+        <if test="productSku != null and productSku != ''">
+            , product_sku = #{productSku}
+        </if>
+        <if test="brand != null and brand != ''">
+            , brand = #{brand}
+        </if>
+        <if test="manufacturer != null and manufacturer != ''">
+            , manufacturer = #{manufacturer}
+        </if>
+        <if test="areaId != null and areaId != ''">
+            , area_id = #{areaId}
+        </if>
+        <if test="storeId != null and storeId != ''">
+            , store_id = #{storeId}
+        </if>
+        <if test="productType != null and productType != ''">
+            , product_type = #{productType}
+        </if>
+        <if test="category != null and category != ''">
+            , "category" = #{category}
+        </if>
+        <if test="detailType != null and detailType != ''">
+            , detail_type = #{detailType}
+        </if>
+        <if test="originCountry != null and originCountry != ''">
+            , origin_country = #{originCountry}
+        </if>
+        <if test="nature != null and nature != ''">
+            , nature = #{nature}
+        </if>
+        <if test="length != null">
+            , "length" = #{length}
+        </if>
+        <if test="width != null">
+            , width = #{width}
+        </if>
+        <if test="height != null">
+            , height = #{height}
+        </if>
+        <if test="weight != null">
+            , weight = #{weight}
+        </if>
+        <if test="status != null">
+            , status = #{status}
+        </if>
+        <if test="adoptStatus != null">
+            , adopt_status = #{adoptStatus}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <select id="findById" resultMap="product">
+        SELECT id, "name", product_price, product_price_code, gather_price, gather_price_code, origin_name, origin_url,
+               describe, point_one, point_two, point_three, point_four, point_five, sell_type, component_id, tax_code,
+               search_key, super_key, stock, delivery_time, product_sku, brand, manufacturer, area_id, store_id,
+               product_type, "category", detail_type, nature, "length", width, height, weight, status, adopt_status,
+                origin_country, del_flag, creator, create_time, updater, update_time
+        FROM t_erp_product
+        WHERE id = #{id}
+        <if test="!includeDelete">
+            AND del_flag = '0'
+        </if>
+    </select>
+
+    <select id="getList" resultMap="erpProductInfo">
+        SELECT tep.id, tep.name, tep.product_price, tep.product_price_code, tep.gather_price, tep.gather_price_code, tep.origin_name, tep.origin_url,
+               tep.point_one, tep.point_two, tep.point_three, tep.point_four, tep.point_five, tep.sell_type, tep.component_id, tep.tax_code,
+                tep.search_key, tep.super_key, tep.stock, tep.delivery_time, tep.product_sku, tep.brand, tep.manufacturer, tep.area_id, tep.store_id,
+                tep.product_type, tep.category, tep.detail_type, tep.nature, tep.length, tep.width, tep.height, tep.weight, tep.status, tep.adopt_status,
+                tep.origin_country, tep.del_flag, tep.creator, tep.create_time, tep.updater, tep.update_time, su1.nick_name AS creatorNickName, su2.nick_name AS updaterNickName
+        FROM t_erp_product tep
+        LEFT JOIN sys_user su1 ON su1.user_id = tep.creator
+        LEFT JOIN sys_user su2 ON su2.user_id = tep.updater
+        <where>
+            <if test="id != null and id != ''">
+                AND tep.id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                AND tep.name LIKE CONCAT('%', #{name}::TEXT, '%')
+            </if>
+            <if test="userId != null">
+                AND tep.creator = #{userId}
+            </if>
+            <if test="sellType != null">
+                AND tep.sell_type = #{sellType}
+            </if>
+            <if test="status != null">
+                AND tep.status = #{status}
+            </if>
+            <if test="adoptStatus != null">
+                AND tep.adopt_status = #{adoptStatus}
+            </if>
+        </where>
+        ORDER BY tep.create_time DESC
+    </select>
+
+</mapper>
